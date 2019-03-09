@@ -45,6 +45,7 @@ public abstract class FileTransformer implements IFileVisitor {
 
   @Override
   public void visit(File file) {
+    int i = 0;
     if (!file.isFile()) {
       return;
     }
@@ -58,7 +59,11 @@ public abstract class FileTransformer implements IFileVisitor {
        * writer has been decorated by the concrete subclass!). You need to write a loop to read the
        * characters and write them to the writer.
        */
-      
+
+      while((i = reader.read()) != -1)
+      {
+        writer.write(i);
+      }
       reader.close();
       writer.flush();
       writer.close();

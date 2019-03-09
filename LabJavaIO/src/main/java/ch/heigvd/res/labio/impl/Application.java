@@ -7,10 +7,9 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import ch.heigvd.res.labio.quotes.Quote;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+
+import java.io.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
@@ -86,7 +85,7 @@ public class Application implements IApplication {
       Quote quote = client.fetchQuote();
 
       //We call storeQuote to create the file with the quote inside
-      storeQuote(quote,String.format("quote-%d",i));
+      storeQuote(quote,String.format("quote-%d.utf8",i));
 
       /* There is a missing piece here!
        * As you can see, this method handles the first part of the lab. It uses the web service
@@ -128,7 +127,21 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException {
     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    List<String> tags = quote.getTags();
+    String pathEnd = "";
+    for (String tag : tags)
+    {
+      pathEnd += "/" + tag;
+    }
+    String path = WORKSPACE_DIRECTORY + pathEnd + "/" + filename;
 
+    File file = new File(path);
+    file.getParentFile().mkdirs();
+    file.createNewFile();
+
+    FileWriter fileWriter = new FileWriter(file);
+    fileWriter.write(quote.getQuote());
+    fileWriter.close();
   }
   
   /**
@@ -145,6 +158,11 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+        try {
+          writer.write(file.getPath() + "\n");
+        } catch (IOException e) {
+          return;
+        }
       }
     });
   }

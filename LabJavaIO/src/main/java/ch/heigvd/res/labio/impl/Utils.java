@@ -1,5 +1,7 @@
 package ch.heigvd.res.labio.impl;
 
+import sun.security.util.Resources_ko;
+
 import java.util.logging.Logger;
 
 /**
@@ -20,7 +22,35 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    String Result[] = new String[2];
+    int i = 0;
+
+    // We look on each char of our lines, and we look if we get a \r ou \n. If we do, we check if the char after is a \n.
+    for(;i < lines.length();i++)
+    {
+      if (lines.charAt(i) == '\r' || lines.charAt(i) == '\n')
+      {
+        if(i+ 1 < lines.length() && lines.charAt(i + 1) == '\n')
+        {
+          i += 1;
+        }
+        break;
+      }
+    }
+
+    
+    if(i < lines.length())
+    {
+      Result[0] = lines.substring(0,i+1);
+      Result[1] = lines.substring(i+1);
+    }
+    else
+    {
+      Result[0] = "";
+      Result[1] = lines;
+    }
+    return Result;
   }
 
 }

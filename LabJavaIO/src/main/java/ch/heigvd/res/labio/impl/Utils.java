@@ -39,7 +39,7 @@ public class Utils {
       }
     }
 
-    
+
     if(i < lines.length())
     {
       Result[0] = lines.substring(0,i+1);

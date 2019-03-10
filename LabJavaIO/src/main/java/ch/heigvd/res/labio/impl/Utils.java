@@ -1,7 +1,5 @@
 package ch.heigvd.res.labio.impl;
 
-import sun.security.util.Resources_ko;
-
 import java.util.logging.Logger;
 
 /**

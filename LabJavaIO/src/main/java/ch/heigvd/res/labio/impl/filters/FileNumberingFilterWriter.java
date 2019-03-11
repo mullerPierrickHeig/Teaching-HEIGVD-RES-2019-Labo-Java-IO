@@ -4,6 +4,9 @@ import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.logging.Logger;
+import ch.heigvd.res.labio.impl.Utils;
+
+import javax.rmi.CORBA.Util;
 
 /**
  * This class transforms the streams of character sent to the decorated writer.
@@ -18,24 +21,47 @@ import java.util.logging.Logger;
 public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
-
+  private int lines = 0;
+  private char lastChar = 'a';
   public FileNumberingFilterWriter(Writer out) {
     super(out);
   }
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+      write(str.toCharArray(),off,len);
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for(int i = off; i < (off + len); i++)
+    {
+      write(cbuf[i]);
+    }
   }
 
   @Override
   public void write(int c) throws IOException {
-    super.write(c);
+
+      if(c == '\n')
+      {
+        lastChar = 'a';
+        super.write(c);
+        super.write((Integer.toString(++lines)));
+        super.write('\t');
+      }
+      else
+       {
+          if (lines == 0 || (c != '\n' && lastChar == '\r')) {
+              lastChar = 'a';
+              super.write((Integer.toString(++lines)));
+              super.write('\t');
+          }
+          super.write(c);
+      }
+    lastChar = (char)c;
   }
 
 }

@@ -137,9 +137,9 @@ public class Application implements IApplication {
 
     File file = new File(path);
     file.getParentFile().mkdirs();
-    file.createNewFile();
 
-    FileWriter fileWriter = new FileWriter(file);
+    OutputStreamWriter fileWriter = new OutputStreamWriter(new FileOutputStream(path),"utf-8");
+
     fileWriter.write(quote.getQuote());
     fileWriter.close();
   }
